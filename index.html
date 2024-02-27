@@ -170,14 +170,15 @@
         }
       
 
-        if (localStorage.length > 0) {
+        if (localStorage.length > 0 ) {
             for (let i = 0; i < localStorage.length; i++) {
 
                 let key = localStorage.key(i);
+                if(typeof(+key) == 'number'){
                 let text = localStorage.getItem(key)
                 let task = new Task(key, text);
                 task.createTask();
-                iterrations.push(key)
+                iterrations.push(key)}
 
             }
 
