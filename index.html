@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <style type="text/css">
+        .list {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 600px;
+            height: 600px;
+            background-color: rgb(68, 220, 34);
+            border-radius: 20px 5px 20px 5px;
+            border: 2px solid black;
+            padding: 10px;
+            font-size: 30px;
+
+
+        }
+
+        .wrapper {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+
+        }
+
+        .search {
+            text-align: center;
+        }
+
+        .search button {
+            border-radius: 0 5px 5px 0;
+        }
+
+        .do-list {
+            flex: 1 1 450px;
+            overflow: auto;
+            
+
+        }
+
+        button {
+            border-radius: 5px;
+            padding: 10px 20px;
+            background-color: rgb(24, 4, 115);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+
+
+        }
+
+        input {
+            padding: 10px;
+            width: 60%;
+            border-radius: 5px 0 0 5зч;
+        }
+
+        li {
+            list-style-type: none;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 100%;
+            gap: 5px;
+        }
+
+        p {
+            flex: 0 0 75%
+        }
+
+        .button-box {
+            flex: 0 0 20%;
+        }
+
+        .close,
+        .done {
+            font-size: 30px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .close {
+            color: red
+        }
+
+        .done {
+            color: yellow;
+        }
+    </style>
+    </style>
+</head>
+
+<body>
+    <div class="list">
+        <div class="container">
+            <div class="wrapper">
+                <div class="search"><input type="text" placeholder="Введіть текст"><button>Додати</button></div>
+                <ul class="do-list">
+
+                </ul>
+                <button class="research">Очистити</button>
+            </div>
+
+        </div>
+
+    </div>
+    <script>
+        const toDoList = document.querySelector('.do-list');
+        const addButton = document.querySelector('.search>button');
+        const input = document.querySelector('input');
+        const research = document.querySelector('.research');
+        let id = 0;
+        let iterrations = [];
+
+
+
+
+        class Task {
+            constructor(number, task) {
+                this.number = number;
+                this.task = task;
+            }
+
+            createTask() {
+
+                //create element
+                const div = document.createElement('div');
+                const li = document.createElement("li");
+                const done = document.createElement("span");
+                const del = document.createElement("span");
+                const p = document.createElement("p");
+                // add classes 
+
+                li.classList.add('do-list');
+                done.classList.add('material-symbols-outlined', 'done');
+                del.classList.add('material-symbols-outlined', 'close');
+
+
+
+                //fill in the elements
+                done.innerText = "check";
+                del.innerText = "close";
+
+                p.innerHTML = this.task;
+                li.append(p, done, del);
+                li.id = this.number;
+                toDoList.append(li);
+                input.value = '';
+
+                del.addEventListener("click", () => {
+                    del.parentElement.remove()
+                })
+                done.addEventListener("click", () => {
+                    p.style.textDecoration = "line-through"
+                })
+            }
+        }
+      
+
+        if (localStorage.length > 0) {
+            for (let i = 0; i < localStorage.length; i++) {
+
+                let key = localStorage.key(i);
+                let text = localStorage.getItem(key)
+                let task = new Task(key, text);
+                task.createTask();
+                iterrations.push(key)
+
+            }
+
+        }
+
+        id = iterrations.sort((a,b) => {return b - a}).splice(0,1).join("");
+        console.log(id)
+
+        addButton.addEventListener('click', () => {
+            if (input.value.length === 0) return;
+            ++id;
+            
+            const text = input.value;
+            let task = new Task(id, text);
+            task.createTask();
+            localStorage.setItem(id, text)
+
+
+        })
+
+        research.addEventListener('click', () => {
+            toDoList.innerHTML = '';
+            localStorage.clear();
+        })
+
+
+
+
+
+    </script>
+</body>
+
+</html>
